@@ -9,8 +9,9 @@ class LinkedList:
 
     def insert_box(self, box): 
 
+        # if first box in list
         if self.head == None:
-            # add box to linked list
+
             self.head = box
 
         else:

@@ -16,8 +16,10 @@ class Box(pygame.sprite.Sprite):
 
         # create visual object
         self.surf = pygame.Surface((self.width, self.height))
-        # make object white
+
+        # make object black (display.white produces black somehow?)
         self.surf.set_colorkey((display.white),RLEACCEL)
+
         # init rect (area under "surf" used for logic. 
         # surf is purely the visual)
         self.rect = self.surf.get_rect(
@@ -28,6 +30,9 @@ class Box(pygame.sprite.Sprite):
         )
 
         self.next = None
+
+        self.offset_x = 0
+        self.offset_y = 0
         
     def move(self):
         # if box is not selected...
@@ -37,7 +42,7 @@ class Box(pygame.sprite.Sprite):
             # if box reaches top...
             if self.rect.top <= 0:
                 # set box to bottom again
-                self.rect.top = 1000
+                self.kill()
 
             
             

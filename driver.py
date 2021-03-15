@@ -41,7 +41,7 @@ while running:
                 box.dragging = False
 
         # when mouse is clicked and moving
-        elif event.type == pygame.MOUSEMOTION:
+        elif event.type == pygame.MOUSEMOTION and box.clicked == True:
             if box.dragging:
 
                 # coordinates while moving
@@ -53,16 +53,27 @@ while running:
             
         # add a new box ?
         elif event.type == ADD_BOX:
-            # create new box and add it to sprite groups
-            box = Box(clicked=False, dragging=False)
-            boxes.add(box)
 
-    # moves box if it hasn't been clicked
-    if box.clicked == False or box.dragging == True:
+            # create new box 
+            box = Box(display)
+
+            # add it to sprite groups
+            boxes.add(box)
+                
+            # insert node into linked list
+            llist.insert_box(box)
+                         
+
+    # first box move if it hasn't been clicked
+    if box.clicked == False:
         box.move()
 
+    # prev box move if it hasn't been clicked
+    elif box.next is not None and box.next.clicked == False:
+        box.next.move()
+
     boxes.update()
-    screen.fill(WHITE)
+    screen.fill(display.white)
 
     # draw all sprites
     for entity in boxes:

@@ -1,7 +1,6 @@
 from setup import *
 
 running = True
-
 # ways for user to quit game
 def quit(running):
     if event.type == KEYDOWN:
@@ -19,8 +18,13 @@ def mouse_click(box):
 
             # when cursor is ontop of box
             if box.rect.collidepoint(event.pos):
-                box.dragging = True
+
+                # remove box from linked list
+                llist.remove_box(box)
+
+
                 box.clicked = True
+                box.dragging = True
 
                 # coordinates when clicked
                 mouse_x, mouse_y = event.pos
@@ -48,8 +52,8 @@ def drag(box):
 
     # when mouse is clicked and moving
     if event.type == pygame.MOUSEMOTION and box.clicked == True:
-        if box.dragging:
-
+        
+        if box.dragging == True:
             # coordinates while moving
             mouse_x, mouse_y = event.pos
 
@@ -75,6 +79,7 @@ def add_box(box):
     return box
 
 
+
 while running:
     
     # get events from queue
@@ -90,15 +95,15 @@ while running:
 
         box = add_box(box)
                          
-    # first box move if it hasn't been clicked
+    # first box 
     if box.clicked == False:
         box.move()
 
-    # prev box move if it hasn't been clicked
+    # second box
     if box.next is not None and box.next.clicked == False:
         box.next.move()
 
-        if box.next.next is not None and box.next.next.clicked == False:
+        if box.next.next is not None and box.next.next == False:
             box.next.next.move()
 
 
@@ -114,4 +119,3 @@ while running:
 
     # ensure program maintains a rate of 30 frames per second
     clock.tick(30)
-

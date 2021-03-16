@@ -33,6 +33,7 @@ class Box(pygame.sprite.Sprite):
 
         self.offset_x = 0
         self.offset_y = 0
+
         
     def move(self):
         # if box is not selected...

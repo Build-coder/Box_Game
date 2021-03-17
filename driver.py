@@ -1,29 +1,18 @@
 from setup import *
 
-# ways for user to quit game
-def quit(running):
-    if event.type == KEYDOWN:
-        if event.key == K_ESCAPE or event.key == K_q:
-            running = False
-    elif event.type == QUIT:
-        running = False
-    
-    return running
-
 # when mouse is clicked      
-def mouse_click(box):
-    if event.type == MOUSEBUTTONDOWN:
-        if event.button == 1:
+def mouse_click():
+    if event.type == MOUSEBUTTONDOWN and event.button ==1:
+
+        for box in boxes:
 
             # when cursor is ontop of box
             if box.rect.collidepoint(event.pos):
 
-                # remove box from linked list
-                llist.remove_box(box)
-
+                # # remove box from linked list
+                # llist.remove_box(box)
 
                 box.clicked = True
-                box.dragging = True
 
                 # coordinates when clicked
                 mouse_x, mouse_y = event.pos
@@ -36,32 +25,35 @@ def mouse_click(box):
                 """
                 box.offset_x = box.rect.x - mouse_x
                 box.offset_y = box.rect.y - mouse_y
-    
-    return box
 
-def mouse_unclicked(box):
 
-    if event.type == MOUSEBUTTONUP:
-        if event.button == 1:
-            box.dragging = False
 
-    return box
+def mouse_drag():
 
-def mouse_drag(box):
+    for box in boxes:
 
-    # when mouse is clicked and moving
-    if event.type == pygame.MOUSEMOTION and box.clicked == True and box.dragging == True:
-    
-        # coordinates while moving
-        mouse_x, mouse_y = event.pos
+        # when mouse is clicked and moving
+        if box.clicked and event.type == pygame.MOUSEMOTION:
 
-        # align box to where user intended
-        box.rect.x = mouse_x + box.offset_x
-        box.rect.y = mouse_y + box.offset_y
+            # coordinates while moving
+            mouse_x, mouse_y = event.pos
 
-    return box
+            # align box to where user intended
+            box.rect.x = mouse_x + box.offset_x
+            box.rect.y = mouse_y + box.offset_y
 
-def add_box(box):
+            box.dragged = True
+
+
+def mouse_unclicked():
+
+    for box in boxes:
+
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            box.clicked = False
+
+
+def add_box():
     # add a new box ?
     if event.type == ADD_BOX:
 
@@ -72,26 +64,43 @@ def add_box(box):
         boxes.add(box)
             
         # insert node into linked list
-        llist.insert_box(box)
+        # llist.insert_box(box)
 
-    return box
 
+# ways for user to quit game
+def quit(running):
+    if event.type == KEYDOWN:
+        if event.key == K_ESCAPE or event.key == K_q:
+            running = False
+    elif event.type == QUIT:
+        running = False
+    
+    return running
+
+
+# main program
 running = True
 
 while running:
-    
-    # get events from queue
+
+    # check if any events from queue are triggered
     for event in pygame.event.get():
 
-        box = mouse_click(box)
-        box = mouse_drag(box)
-        box = mouse_unclicked(box)
-        box = add_box(box)
+        mouse_click()
+        mouse_drag()
+        mouse_unclicked()
+        add_box()
         running = quit(running)                     
     
-    llist.traverse_list()
+    # only move touched boxes (others haven't been removed from belt)
+    for box in boxes:
+        if not box.clicked and not box.dragged:
+            box.move()
+     
+    # not sure what this does
+    # boxes.update()
 
-    boxes.update()
+    # keep display white I guess
     screen.fill(display.white)
 
     # draw all sprites

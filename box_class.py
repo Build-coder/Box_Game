@@ -12,7 +12,7 @@ class Box(pygame.sprite.Sprite):
         self.height = random.randint(25, 100)
 
         self.clicked = False
-        self.dragging = False
+        self.dragged = False
 
         # create visual object
         self.surf = pygame.Surface((self.width, self.height))
@@ -36,14 +36,13 @@ class Box(pygame.sprite.Sprite):
 
         
     def move(self):
-        # if box is not selected...
-        if not self.dragging:
-            self.rect.move_ip(0,-5)
+        # box moves up
+        self.rect.move_ip(0,-5)
 
-            # if box reaches top...
-            if self.rect.top <= 0:
-                # set box to bottom again
-                self.kill()
+        # if box reaches top...
+        if self.rect.top <= 0:
+            # box ceases to exist
+            self.kill()
 
             
             

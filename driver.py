@@ -1,6 +1,5 @@
 from setup import *
 
-running = True
 # ways for user to quit game
 def quit(running):
     if event.type == KEYDOWN:
@@ -48,18 +47,17 @@ def mouse_unclicked(box):
 
     return box
 
-def drag(box):
+def mouse_drag(box):
 
     # when mouse is clicked and moving
-    if event.type == pygame.MOUSEMOTION and box.clicked == True:
-        
-        if box.dragging == True:
-            # coordinates while moving
-            mouse_x, mouse_y = event.pos
+    if event.type == pygame.MOUSEMOTION and box.clicked == True and box.dragging == True:
+    
+        # coordinates while moving
+        mouse_x, mouse_y = event.pos
 
-            # align box to where user intended
-            box.rect.x = mouse_x + box.offset_x
-            box.rect.y = mouse_y + box.offset_y
+        # align box to where user intended
+        box.rect.x = mouse_x + box.offset_x
+        box.rect.y = mouse_y + box.offset_y
 
     return box
 
@@ -78,34 +76,20 @@ def add_box(box):
 
     return box
 
-
+running = True
 
 while running:
     
     # get events from queue
     for event in pygame.event.get():
 
-        running = quit(running)
-
         box = mouse_click(box)
-        
+        box = mouse_drag(box)
         box = mouse_unclicked(box)
-
-        box = drag(box)
-
         box = add_box(box)
-                         
-    # first box 
-    if box.clicked == False:
-        box.move()
-
-    # second box
-    if box.next is not None and box.next.clicked == False:
-        box.next.move()
-
-        if box.next.next is not None and box.next.next == False:
-            box.next.next.move()
-
+        running = quit(running)                     
+    
+    llist.traverse_list()
 
     boxes.update()
     screen.fill(display.white)

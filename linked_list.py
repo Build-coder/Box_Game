@@ -28,23 +28,21 @@ class LinkedList:
             self.size += 1
 
     def remove_box(self, box):
+
         temp = self.head
 
-        # if head is selected
         if temp is not None:
 
-            # disconnect then deallocate 
             self.head = temp.next
             temp = None
 
             self.size -= 1
             
         else:
-            while(temp is not None):
+            while temp is not None:
                 if temp == box:
                     break
-
-                # disconnect node
+    
                 prev = temp
                 temp = temp.next 
 
@@ -62,6 +60,10 @@ class LinkedList:
 
         # one way to traverse linked list
         temp = self.head
+
+        if temp is None:
+            print('Linked list is empty')
+            return
         
         while temp.next is not None:
             print(temp.height)
@@ -69,29 +71,22 @@ class LinkedList:
         
         # last box in list
         print(temp.height)
-
-
+        
         # splite up two methods to console
-        print()
+        print()  
 
-
+    def traverse_list(self):
         # another way to traverse linked list
         temp = self.head
 
-        for i in range(llist.size):
-            print(temp.height)
+        while temp is not None:
+            temp.move()
             temp = temp.next
 
         return
-            
-
-    def traverse_list(self):
-        pass
-
 
 
 # using code below to test linked list
-
 if __name__ == "__main__":
 
     from box_class import Box
@@ -105,5 +100,9 @@ if __name__ == "__main__":
         box = Box(display)
         llist.insert_box(box)
 
+    llist.print_list()
+
+    for box in range(3):
+        llist.remove_box(box)
 
     llist.print_list()

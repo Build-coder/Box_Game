@@ -1,88 +1,33 @@
-import pygame
 
-# --- constants --- (UPPER_CASE names)
 
-SCREEN_WIDTH = 430
-SCREEN_HEIGHT = 410
-
-#BLACK = (  0,   0,   0)
-WHITE = (255, 255, 255)
-RED   = (255,   0,   0)
-
-FPS = 30
-
-# --- classses --- (CamelCase names)
-
-# empty
-
-# --- functions --- (lower_case names)
-
-# empty
-
-# --- main ---
-
-# - init -
-
-pygame.init()
-
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-#screen_rect = screen.get_rect()
-
-pygame.display.set_caption("Tracking System")
-
-# - objects -
-
-rectangle = pygame.rect.Rect(176, 134, 17, 17)
-rectangle_draging = False
-
-# - mainloop -
-
-clock = pygame.time.Clock()
-
-running = True
-
-while running:
-
-    # - events -
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:            
-                if rectangle.collidepoint(event.pos):
-                    rectangle_draging = True
-                    mouse_x, mouse_y = event.pos
-                    offset_x = rectangle.x - mouse_x
-                    offset_y = rectangle.y - mouse_y
-
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:            
-                rectangle_draging = False
-
-        elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging:
-                mouse_x, mouse_y = event.pos
-                rectangle.x = mouse_x + offset_x
-                rectangle.y = mouse_y + offset_y
-
-    # - updates (without draws) -
-
-    # empty
-
-    # - draws (without updates) -
-
-    screen.fill(WHITE)
-
-    pygame.draw.rect(screen, RED, rectangle)
-
-    pygame.display.flip()
-
-    # - constant game speed / FPS -
-
-    clock.tick(FPS)
-
-# - end -
-
-pygame.quit()
+# Python program to check if rectangles overlap 
+class Point: 
+    def __init__(self, x, y): 
+        self.x = x 
+        self.y = y 
+  
+# Returns true if two rectangles(l1, r1)  
+# and (l2, r2) overlap 
+def doOverlap(l1, r1, l2, r2): 
+      
+    # If one rectangle is on left side of other 
+    if(l1.x >= r2.x or l2.x >= r1.x): 
+        return False
+  
+    # If one rectangle is above other 
+    if(l1.y <= r2.y or l2.y <= r1.y): 
+        return False
+  
+    return True
+  
+# Driver Code 
+if __name__ == "__main__": 
+    l1 = Point(0, 10) 
+    r1 = Point(10, 0) 
+    l2 = Point(5, 5) 
+    r2 = Point(15, 0) 
+  
+    if(doOverlap(l1, r1, l2, r2)): 
+        print("Rectangles Overlap") 
+    else: 
+        print("Rectangles Don't Overlap")

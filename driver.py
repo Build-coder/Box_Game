@@ -9,9 +9,6 @@ def mouse_click():
             # when cursor is ontop of box
             if box.rect.collidepoint(event.pos):
 
-                # # remove box from linked list
-                # llist.remove_box(box)
-
                 box.clicked = True
 
                 # coordinates when clicked
@@ -52,6 +49,8 @@ def mouse_unclicked():
         if event.type == MOUSEBUTTONUP and event.button == 1:
             box.clicked = False
 
+            check_overlap()
+
 
 def add_box():
     # add a new box ?
@@ -62,9 +61,22 @@ def add_box():
 
         # add it to sprite groups
         boxes.add(box)
+
+def check_overlap():
+    for box in boxes:
+        if box.clicked and box.dragged:
             
-        # insert node into linked list
-        # llist.insert_box(box)
+            print('left corner x: ', box.left_corner_x)
+            print('left corner y: ', box.left_corner_y)
+            print('right corner x: ', box.right_corner_x)
+            print('right corner y: ', box.right_corner_y)
+
+
+def clear():
+    if event.type == KEYDOWN:
+        if event.key == K_r:
+
+            boxes.empty()
 
 
 # ways for user to quit game
@@ -74,11 +86,9 @@ def quit(running):
             running = False
     elif event.type == QUIT:
         running = False
-    
+
     return running
 
-
-# main program
 running = True
 
 while running:
@@ -90,25 +100,25 @@ while running:
         mouse_drag()
         mouse_unclicked()
         add_box()
-        running = quit(running)                     
+        clear()
+        running = quit(running)     
+
+    screen.fill(display.white)                
     
     # only move touched boxes (others haven't been removed from belt)
     for box in boxes:
         if not box.clicked and not box.dragged:
             box.move()
-     
-    # not sure what this does
-    # boxes.update()
-
-    # keep display white I guess
-    screen.fill(display.white)
-
-    # draw all sprites
-    for entity in boxes:
-        screen.blit(entity.surf, entity.rect)
+        
+        screen.blit(box.surf, box.rect)
 
     # display updated image
     pygame.display.flip()
 
     # ensure program maintains a rate of 30 frames per second
     clock.tick(30)
+
+
+
+
+

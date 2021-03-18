@@ -29,8 +29,17 @@ class Box(pygame.sprite.Sprite):
             )
         )
 
+        # used for linked list
         self.next = None
 
+        # coordinates for corners of box
+        self.left_corner_x = self.rect.x - self.width
+        self.left_corner_y = self.rect.y - self.height
+
+        self.right_corner_x = self.rect.x + self.width
+        self.right_corner_y = self.rect.y + self.height
+
+        # vars to correct object drag and drop
         self.offset_x = 0
         self.offset_y = 0
 

@@ -33,24 +33,26 @@ class Box(pygame.sprite.Sprite):
         self.next = None
 
         # coordinates for corners of box
-        self.left_corner_x = self.rect.x - self.width
-        self.left_corner_y = self.rect.y - self.height
-
-        self.right_corner_x = self.rect.x + self.width
-        self.right_corner_y = self.rect.y + self.height
+        self.upper_left_corner = [self.rect.x, self.rect.y]
+        self.upper_right_corner = [self.rect.x + self.width, self.rect.y]
+        self.lower_left_corner = [self.rect.x, self.rect.y - self.height]
+        self.lower_right_corner = [self.rect.x + self.width, self.rect.y - self.height]
 
         # vars to correct object drag and drop
         self.offset_x = 0
         self.offset_y = 0
 
+        self.marked = False
+
         
-    def move(self):
+    def move(self, boxes):
         # box moves up
         self.rect.move_ip(0,-5)
 
         # if box reaches top...
         if self.rect.top <= 0:
             # box ceases to exist
+            boxes.remove(self)
             self.kill()
 
             

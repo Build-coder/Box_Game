@@ -4,6 +4,9 @@ from linked_list import LinkedList
 from display_class import Display 
 from pygame.locals import *
 
+# list to store items for testing
+myList = []
+
 # init game
 pygame.init()
 

@@ -8,8 +8,12 @@ class Box(pygame.sprite.Sprite):
         super(Box, self).__init__()
 
         # create new dimensions for new box
-        self.width = random.randint(25, 100)
-        self.height = random.randint(25, 100)
+        # self.width = random.randint(25, 100)
+        # self.height = random.randint(25, 100)
+
+        # test
+        self.width = 50
+        self.height = 50
 
         self.clicked = False
         self.dragged = False
@@ -35,8 +39,8 @@ class Box(pygame.sprite.Sprite):
         # coordinates for corners of box
         self.upper_left_corner = [self.rect.x, self.rect.y]
         self.upper_right_corner = [self.rect.x + self.width, self.rect.y]
-        self.lower_left_corner = [self.rect.x, self.rect.y - self.height]
-        self.lower_right_corner = [self.rect.x + self.width, self.rect.y - self.height]
+        self.lower_left_corner = [self.rect.x, self.rect.y + self.height]
+        self.lower_right_corner = [self.rect.x + self.width, self.rect.y + self.height]
 
         # vars to correct object drag and drop
         self.offset_x = 0
@@ -51,8 +55,9 @@ class Box(pygame.sprite.Sprite):
 
         # if box reaches top...
         if self.rect.top <= 0:
-            # box ceases to exist
+            # remove box from group
             boxes.remove(self)
+            # deallocate memory
             self.kill()
 
             

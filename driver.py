@@ -1,16 +1,6 @@
 from setup import *
 from test import *
 
-# # code to clear console
-# import os
-
-# def clear_console():
-#     if event.type == KEYDOWN:
-#         if event.key == K_c:
-#             clear = lambda: os.system('clear')
-#             clear()
-
-
 # when mouse is clicked      
 def mouse_click(event):
     if event.type == MOUSEBUTTONDOWN and event.button ==1:
@@ -21,7 +11,6 @@ def mouse_click(event):
             if box.rect.collidepoint(event.pos):
 
                 box.clicked = True
-                print('box clicked')
 
                 # coordinates when clicked
                 mouse_x, mouse_y = event.pos
@@ -35,9 +24,6 @@ def mouse_click(event):
                 box.offset_x = box.rect.x - mouse_x
                 box.offset_y = box.rect.y - mouse_y
 
-                print('reached end of mouse_click()')
-
-
 
 def mouse_drag(event):
 
@@ -46,7 +32,6 @@ def mouse_drag(event):
         if box.clicked and event.type == pygame.MOUSEMOTION:
 
             box.dragged = True
-            print('box dragged')
 
             # coordinates while moving
             mouse_x, mouse_y = event.pos
@@ -60,28 +45,15 @@ def mouse_drag(event):
             # align box to where user intended
             box.rect.x = mouse_x + box.offset_x
             box.rect.y = mouse_y + box.offset_y
-                
-            print('In mouse_drag()')
-            print('x: ', box.rect.x, ', ', box.rect.y)
-            print()
+
+            # check_coordinates()
 
 def mouse_unclicked(event):
 
     for box in boxes:
 
         if event.type == MOUSEBUTTONUP and event.button == 1:
-            print('In mouse_unclicked()')
-            print('x: ', box.rect.x, ', ', box.rect.y)
-            print()
             box.clicked = False
-
-
-# def check_coordinates(box):
-    
-#     # temp code for testing
-#     if event.type == KEYDOWN:
-#         if event.key == K_c:
-#             pass
 
 # def add_box():
 
@@ -101,23 +73,6 @@ def mouse_unclicked(event):
     #     # add it to sprite groups
     #     boxes.add(box)
 
-def check_overlap(box):
-
-    '''
-    comparing each box in group (obj) to the box
-    that is selected by the user
-    '''
-    for obj in boxes:    
-
-        pass
-
-
-# def clear_all():
-#     if event.type == KEYDOWN:
-#         if event.key == K_r:
-
-#             boxes.empty()
-
 
 # ways for user to quit game
 def quit(event, running):
@@ -129,7 +84,8 @@ def quit(event, running):
 
     return running
 
-def main_prog():
+
+def main(box):
 
     running = True
 
@@ -141,9 +97,11 @@ def main_prog():
             mouse_click(event)
             mouse_drag(event)
             mouse_unclicked(event)
-            # check_coordinates(box)
+            check_coordinates(event)
+            check_overlap(event, box)
+            print_group(event, box)
             add_box(event)
-            clear_all(event)
+            remove_all(event)
             clear = clear_console(event)
             running = quit(event, running)     
 
@@ -168,5 +126,5 @@ if __name__ == "__main__":
     from setup import *
     from test import *
 
-    main_prog()
+    main(box)
 

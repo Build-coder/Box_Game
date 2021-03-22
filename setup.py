@@ -1,6 +1,6 @@
 import pygame
 from box_class import Box
-from linked_list import LinkedList
+# from linked_list import LinkedList
 from display_class import Display 
 from pygame.locals import *
 
@@ -27,7 +27,7 @@ clock = pygame.time.Clock()
 box = Box(display)
 
 # instantiate linked list
-llist = LinkedList()
+# llist = LinkedList()
 
 # create groups to hold box sprites
 boxes = pygame.sprite.Group()
@@ -36,7 +36,7 @@ boxes = pygame.sprite.Group()
 boxes.add(box)
 
 # add box to linked list
-llist.insert_box(box)
+# llist.insert_box(box)
 
 
 

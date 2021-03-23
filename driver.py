@@ -36,24 +36,19 @@ def mouse_drag(event):
             # coordinates while moving
             mouse_x, mouse_y = event.pos
 
-            '''
-            check if boxes overlap
-            if they do, don't allow user to place box
-            '''
-            # overlap = check_overlap(box)
-
             # align box to where user intended
             box.rect.x = mouse_x + box.offset_x
             box.rect.y = mouse_y + box.offset_y
 
-            # check_coordinates()
 
-def mouse_unclicked(event):
+def mouse_unclicked(event, box):
 
-    for box in boxes:
+    for obj in boxes:
 
-        if event.type == MOUSEBUTTONUP and event.button == 1:
-            box.clicked = False
+        overlap = check_overlap(event, box, obj)
+
+        if event.type == MOUSEBUTTONUP and event.button == 1 and not overlap:
+            obj.clicked = False
 
 # def add_box():
 
@@ -96,9 +91,8 @@ def main(box):
 
             mouse_click(event)
             mouse_drag(event)
-            mouse_unclicked(event)
-            check_coordinates(event)
-            check_overlap(event, box)
+            mouse_unclicked(event, box)
+            # check_overlap(event, box)
             print_group(event, box)
             add_box(event)
             remove_all(event)

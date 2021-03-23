@@ -42,59 +42,75 @@ def print_group(event, box):
                     
                 count += 1
 
-def check_overlap(event, box):
+def check_overlap(event, box, obj):
 
-    '''
-    comparing each box in group (obj) to the box
-    that is selected by the user
-    '''
+    # if event.type == KEYDOWN:
+    #     if event.key == K_c:
 
 
-    if event.type == KEYDOWN:
-        if event.key == K_c:
+    if obj is box:
+        return False
 
-            for obj in boxes:  
+    else:
 
-                l1_x = obj.rect.x
-                l1_y = obj.rect.y
+        x_match = False
+        y_match = False
 
-                r1_x = obj.rect.x + obj.width
-                r1_y = obj.rect.y + obj.height
+        box_x_list = range(box.rect.x, box.rect.x + box.width)
+        box_y_list = range(box.rect.y, box.rect.y + box.width)
 
-                l2_x = box.rect.x
-                l2_y = box.rect.y
+        obj_x_list = range(obj.rect.x, obj.rect.x + obj.width)
+        obj_y_list = range(obj.rect.y, obj.rect.y + obj.height)
+        
 
-                r2_x = box.rect.x + box.width
-                r2_y = box.rect.y + box.height
+        for box_x in box_x_list:
+            for obj_x in obj_x_list:
+                if box_x == obj_x:
+                    x_match = True
 
-                if obj is box:
-                    break
+        for box_y in box_y_list:
+            for obj_y in obj_y_list:
+                if box_y == obj_y:
+                    y_match = True
 
-                '''
-                1: upper left corner x
-                2: upper left corner y
+        if x_match and y_match:
 
-                3: upper right corner x
-                4: upper right corner y
+            # print('overlap')
+            return True
 
-                5: lower left corner x
-                6: lower left corner y
+        else:
+            # print('no-overlap')
+            return False
 
-                7: lower right corner x
-                8: lower right corner y
-                '''
-                if box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-                and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
-                or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
-                and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
-                or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-                and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
-                or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
-                and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
-                or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-                and (box.rect.y + (box.height/2)) in range(obj.rect.y, obj.rect.y + obj.height):
 
-                    print('overlap')
+                # box_y_list = range(box.rect.y, box.rect.y + box.height)
+
+                # obj_x_list = range(obj.rect.x, obj.rect.x + obj.width)
+                # obj_y_list = range(obj.rect.y, obj.rect.y + obj.height)
+
+                # for obj in obj_x_list:
+                #     for box in box_x_list:
+                #         if obj == box:
+                #             print('obj is in box x-axis')
+
+                # for obj in obj_y_list:
+                #     for box in box_y_list:
+                #         if obj == box:
+                #             print('obj is in box y-axis')
+
+
+                # if box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+                # and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
+                # or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
+                # and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
+                # or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+                # and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+                # or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
+                # and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+                # or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+                # and (box.rect.y + (box.height/2)) in range(obj.rect.y, obj.rect.y + obj.height):
+                
+                    # print('overlap')
                     
 
 

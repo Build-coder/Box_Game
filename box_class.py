@@ -8,12 +8,12 @@ class Box(pygame.sprite.Sprite):
         super(Box, self).__init__()
 
         # create new dimensions for new box
-        # self.width = random.randint(25, 100)
-        # self.height = random.randint(25, 100)
+        self.width = random.randint(25, 100)
+        self.height = random.randint(25, 100)
 
         # test
-        self.width = 50
-        self.height = 50
+        # self.width = 50
+        # self.height = 50
 
         self.clicked = False
         self.dragged = False

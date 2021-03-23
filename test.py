@@ -70,11 +70,29 @@ def check_overlap(event, box):
                 if obj is box:
                     break
 
-                # upper left hand corner of box
+                '''
+                1: upper left corner x
+                2: upper left corner y
+
+                3: upper right corner x
+                4: upper right corner y
+
+                5: lower left corner x
+                6: lower left corner y
+
+                7: lower right corner x
+                8: lower right corner y
+                '''
                 if box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
                 and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
                 or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
-                and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height):
+                and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
+                or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+                and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+                or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
+                and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+                or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+                and (box.rect.y + (box.height/2)) in range(obj.rect.y, obj.rect.y + obj.height):
 
                     print('overlap')
                     

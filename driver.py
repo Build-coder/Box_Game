@@ -1,5 +1,5 @@
 from setup import *
-from test import *
+from controller import *
 
 # when mouse is clicked      
 def mouse_click(event):
@@ -11,6 +11,7 @@ def mouse_click(event):
             if box.rect.collidepoint(event.pos):
 
                 box.clicked = True
+                box.touched = True
 
                 # coordinates when clicked
                 mouse_x, mouse_y = event.pos
@@ -31,43 +32,43 @@ def mouse_drag(event):
         # when mouse is clicked and moving
         if box.clicked and event.type == pygame.MOUSEMOTION:
 
-            box.dragged = True
-
             # coordinates while moving
             mouse_x, mouse_y = event.pos
 
+            # overlap = check_overlap(event)
+
+            # if not overlap:
+       
             # align box to where user intended
             box.rect.x = mouse_x + box.offset_x
             box.rect.y = mouse_y + box.offset_y
 
 
-def mouse_unclicked(event, box):
+def mouse_unclicked(event):
 
-    for obj in boxes:
+    for box in boxes:
 
-        overlap = check_overlap(event, box, obj)
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            box.clicked = False
 
-        if event.type == MOUSEBUTTONUP and event.button == 1 and not overlap:
-            obj.clicked = False
+# automatically generates new box
+# def add_box(event):
 
-# def add_box():
+#     if event.type == ADD_BOX:
 
-#     # temp code for testing
-#     if event.type == KEYDOWN:
-#         if event.key == K_a:
+#         # create new box 
+#         box = Box(display)
 
-#             box = Box(display)
-#             boxes.add(box)
+#         # add it to sprite groups
+#         boxes.add(box)
 
-    # # add a new box ?
-    # if event.type == ADD_BOX:
-
-    #     # create new box 
-    #     box = Box(display)
-
-    #     # add it to sprite groups
-    #     boxes.add(box)
-
+# give each box in play an id
+def set_id(event):
+    count = 0
+    
+    for box in boxes:
+        box.id = count
+        count += 1
 
 # ways for user to quit game
 def quit(event, running):
@@ -89,12 +90,14 @@ def main(box):
         # check if any events from queue are triggered
         for event in pygame.event.get():
 
+            set_id(event)
             mouse_click(event)
             mouse_drag(event)
-            mouse_unclicked(event, box)
-            # check_overlap(event, box)
-            print_group(event, box)
+            mouse_unclicked(event)
+            check_overlap(event)
+            print_group(event)
             add_box(event)
+            selected(event)
             remove_all(event)
             clear = clear_console(event)
             running = quit(event, running)     
@@ -103,7 +106,7 @@ def main(box):
         
         # only move touched boxes (others haven't been removed from belt)
         for box in boxes:
-            if not box.dragged:
+            if not box.touched:
                 box.move(boxes)
             
             screen.blit(box.surf, box.rect)
@@ -118,7 +121,7 @@ def main(box):
 if __name__ == "__main__":
 
     from setup import *
-    from test import *
+    from controller import *
 
     main(box)
 

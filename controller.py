@@ -60,9 +60,16 @@ def check_overlap(event):
 
             for box in boxes:
 
-                # need a catch if click_box is also 
+                '''
+                need a catch if user selected box is also
+                current box in iteration
+
+                i only want to compare different boxes, not
+                the same box. obviously the same box will have
+                the same coordinates
+                '''
                 if box is click_box:
-                   continue
+                    continue
 
                 else:
 
@@ -85,6 +92,8 @@ def check_overlap(event):
                     if x_match and y_match:
                         print('overlap')
                         return True
+
+            return False
 
 
 def selected(event):

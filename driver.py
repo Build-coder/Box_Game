@@ -34,10 +34,6 @@ def mouse_drag(event):
 
             # coordinates while moving
             mouse_x, mouse_y = event.pos
-
-            # overlap = check_overlap(event)
-
-            # if not overlap:
        
             # align box to where user intended
             box.rect.x = mouse_x + box.offset_x

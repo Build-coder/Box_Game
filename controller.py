@@ -42,6 +42,26 @@ def print_group(event):
                     
                 # count += 1
 
+def check_corners(box, obj):
+    if box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+        and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
+        or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
+        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+        and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
+        or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+        or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
+        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
+        or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
+        and (box.rect.y + (box.height/2)) in range(obj.rect.y, obj.rect.y + obj.height):
+
+        return True
+
+    else:
+        return False
+
+    
+
 def check_overlap(event):
 
     '''
@@ -89,7 +109,9 @@ def check_overlap(event):
                             if box_y == obj_y:
                                 y_match = True
 
-                    if x_match and y_match:
+                    corners = check_corners(click_box, box)
+
+                    if (x_match and y_match) or corners:
                         print('overlap')
                         return True
 

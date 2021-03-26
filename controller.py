@@ -42,25 +42,32 @@ def print_group(event):
                     
                 # count += 1
 
-def check_corners(box, obj):
-    if box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-        and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
-        or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
-        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
-        and box.rect.y in range(obj.rect.y, obj.rect.y + obj.height) \
-        or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
-        or (box.rect.x + box.width) in range(obj.rect.x, obj.rect.x + obj.width) \
-        and (box.rect.y + box.height) in range(obj.rect.y, obj.rect.y + obj.height) \
-        or box.rect.x in range(obj.rect.x, obj.rect.x + obj.width) \
-        and (box.rect.y + (box.height/2)) in range(obj.rect.y, obj.rect.y + obj.height):
+def check_corners(click_box, box):
 
-        return True
+    click_box_x_limit = click_box.rect.x + click_box.width
+    click_box_y_limit = click_box.rect.y + click_box.height
 
+    box_x_limit = box.rect.x + box.width
+    box_y_limit = box.rect.y + box.height
+
+    '''
+    upper left corner
+    upper right corner
+    bottom left corner
+    bottom right corner
+    '''
+
+    if click_box.rect.x in range(box.rect.x, box_x_limit) \
+        and click_box.rect.y in range(box.rect.y, box_y_limit) \
+        or click_box_x_limit in range(box.rect.x, box_x_limit) \
+        and click_box.rect.y in range(box.rect.y, box_y_limit) \
+        or click_box.rect.x in range(box.rect.x, box_y_limit) \
+        and click_box_y_limit in range(box.rect.y, box_y_limit) \
+        or click_box_x_limit in range(box.rect.x, box_x_limit) \
+        and click_box_y_limit in range(box.rect.y, box_y_limit):
+            return True
     else:
         return False
-
-    
 
 def check_overlap(event):
 

@@ -1,7 +1,8 @@
 from setup import *
+from controller import *
 
 # when mouse is clicked      
-def mouse_click():
+def mouse_click(event):
     if event.type == MOUSEBUTTONDOWN and event.button ==1:
 
         for box in boxes:
@@ -10,6 +11,7 @@ def mouse_click():
             if box.rect.collidepoint(event.pos):
 
                 box.clicked = True
+                box.touched = True
 
                 # coordinates when clicked
                 mouse_x, mouse_y = event.pos
@@ -24,63 +26,48 @@ def mouse_click():
                 box.offset_y = box.rect.y - mouse_y
 
 
-
-def mouse_drag():
+def mouse_drag(event):
 
     for box in boxes:
-
         # when mouse is clicked and moving
         if box.clicked and event.type == pygame.MOUSEMOTION:
 
             # coordinates while moving
             mouse_x, mouse_y = event.pos
-
+       
             # align box to where user intended
             box.rect.x = mouse_x + box.offset_x
             box.rect.y = mouse_y + box.offset_y
 
-            box.dragged = True
 
-
-def mouse_unclicked():
+def mouse_unclicked(event):
 
     for box in boxes:
 
         if event.type == MOUSEBUTTONUP and event.button == 1:
             box.clicked = False
 
-            check_overlap()
+# automatically generates new box
+# def add_box(event):
 
+#     if event.type == ADD_BOX:
 
-def add_box():
-    # add a new box ?
-    if event.type == ADD_BOX:
+#         # create new box 
+#         box = Box(display)
 
-        # create new box 
-        box = Box(display)
+#         # add it to sprite groups
+#         boxes.add(box)
 
-        # add it to sprite groups
-        boxes.add(box)
-
-def check_overlap():
+# give each box in play an id
+def set_id(event):
+    count = 0
+    
     for box in boxes:
-        if box.clicked and box.dragged:
-            
-            print('left corner x: ', box.left_corner_x)
-            print('left corner y: ', box.left_corner_y)
-            print('right corner x: ', box.right_corner_x)
-            print('right corner y: ', box.right_corner_y)
-
-
-def clear():
-    if event.type == KEYDOWN:
-        if event.key == K_r:
-
-            boxes.empty()
-
+        box.id = count
+        count += 1
 
 # ways for user to quit game
-def quit(running):
+def quit(event, running):
     if event.type == KEYDOWN:
         if event.key == K_ESCAPE or event.key == K_q:
             running = False
@@ -89,36 +76,48 @@ def quit(running):
 
     return running
 
-running = True
 
-while running:
+def main(box):
 
-    # check if any events from queue are triggered
-    for event in pygame.event.get():
+    running = True
 
-        mouse_click()
-        mouse_drag()
-        mouse_unclicked()
-        add_box()
-        clear()
-        running = quit(running)     
+    while running:
 
-    screen.fill(display.white)                
-    
-    # only move touched boxes (others haven't been removed from belt)
-    for box in boxes:
-        if not box.clicked and not box.dragged:
-            box.move()
+        # check if any events from queue are triggered
+        for event in pygame.event.get():
+
+            set_id(event)
+            mouse_click(event)
+            mouse_drag(event)
+            mouse_unclicked(event)
+            check_overlap(event)
+            print_group(event)
+            add_box(event)
+            selected(event)
+            remove_all(event)
+            clear = clear_console(event)
+            running = quit(event, running)     
+
+        screen.fill(display.white)                
         
-        screen.blit(box.surf, box.rect)
+        # only move touched boxes (others haven't been removed from belt)
+        for box in boxes:
+            if not box.touched:
+                box.move(boxes)
+            
+            screen.blit(box.surf, box.rect)
 
-    # display updated image
-    pygame.display.flip()
+        # display updated image
+        pygame.display.flip()
 
-    # ensure program maintains a rate of 30 frames per second
-    clock.tick(30)
-
-
+        # ensure program maintains a rate of 30 frames per second
+        clock.tick(30)
 
 
+if __name__ == "__main__":
+
+    from setup import *
+    from controller import *
+
+    main(box)
 

@@ -7,9 +7,16 @@ class Box(pygame.sprite.Sprite):
         # inherit all properties of Sprite class
         super(Box, self).__init__()
 
+        # id
+        self.id = 0
+
         # create new dimensions for new box
         self.width = random.randint(25, 100)
         self.height = random.randint(25, 100)
+
+        # test
+        # self.width = 50
+        # self.height = 50
 
         self.clicked = False
         self.dragged = False
@@ -32,28 +39,25 @@ class Box(pygame.sprite.Sprite):
         # used for linked list
         self.next = None
 
-        # coordinates for corners of box
-        self.left_corner_x = self.rect.x - self.width
-        self.left_corner_y = self.rect.y - self.height
-
-        self.right_corner_x = self.rect.x + self.width
-        self.right_corner_y = self.rect.y + self.height
-
         # vars to correct object drag and drop
         self.offset_x = 0
         self.offset_y = 0
 
+        self.touched = False
+
         
-    def move(self):
+    def move(self, boxes):
         # box moves up
         self.rect.move_ip(0,-5)
 
         # if box reaches top...
         if self.rect.top <= 0:
-            # box ceases to exist
+            # remove box from group
+            boxes.remove(self)
+            # deallocate memory
             self.kill()
 
-            
+                
             
             
   

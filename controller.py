@@ -34,40 +34,10 @@ def print_group(event):
     if event.type == KEYDOWN:
         if event.key == K_p:
 
-            # count = 0
-
             for obj in boxes:
                 print('obj ', obj.id, ': x: ', obj.rect.x, ': y: ', obj.rect.y, '\
                     : width: ', obj.width, ': height:', obj.height)
-                    
-                # count += 1
-
-def check_corners(click_box, box):
-
-    click_box_x_limit = click_box.rect.x + click_box.width
-    click_box_y_limit = click_box.rect.y + click_box.height
-
-    box_x_limit = box.rect.x + box.width
-    box_y_limit = box.rect.y + box.height
-
-    '''
-    upper left corner
-    upper right corner
-    bottom left corner
-    bottom right corner
-    '''
-
-    if click_box.rect.x in range(box.rect.x, box_x_limit) \
-        and click_box.rect.y in range(box.rect.y, box_y_limit) \
-        or click_box_x_limit in range(box.rect.x, box_x_limit) \
-        and click_box.rect.y in range(box.rect.y, box_y_limit) \
-        or click_box.rect.x in range(box.rect.x, box_y_limit) \
-        and click_box_y_limit in range(box.rect.y, box_y_limit) \
-        or click_box_x_limit in range(box.rect.x, box_x_limit) \
-        and click_box_y_limit in range(box.rect.y, box_y_limit):
-            return True
-    else:
-        return False
+                
 
 def check_overlap(event):
 
@@ -77,13 +47,16 @@ def check_overlap(event):
     through each obj
     '''
 
+    x_match = False
+    y_match = False
+
     if event.type == KEYDOWN:
         if event.key == K_c:
 
             click_box = selected(event)
 
-            box_x_list = range(click_box.rect.x, click_box.rect.x + click_box.width)
-            box_y_list = range(click_box.rect.y, click_box.rect.y + click_box.width)
+            click_box_x_list = range(click_box.rect.x, click_box.rect.x + click_box.width)
+            click_box_y_list = range(click_box.rect.y, click_box.rect.y + click_box.height)
 
             for box in boxes:
 
@@ -103,22 +76,27 @@ def check_overlap(event):
                     x_match = False
                     y_match = False
 
-                    obj_x_list = range(box.rect.x, box.rect.x + box.width)
-                    obj_y_list = range(box.rect.y, box.rect.y + box.height)
+                    box_x_list = range(box.rect.x, box.rect.x + box.width)
+                    box_y_list = range(box.rect.y, box.rect.y + box.height)
 
-                    for box_x in box_x_list:
-                        for obj_x in obj_x_list:
-                            if box_x == obj_x:
+                    for click_box_x in click_box_x_list:
+                        for box_x in box_x_list:
+                            if click_box_x == box_x:
                                 x_match = True
+                                break
+                        if click_box_x == box_x:
+                            break
 
-                    for box_y in box_y_list:
-                        for obj_y in obj_y_list:
-                            if box_y == obj_y:
+
+                    for click_box_y in click_box_y_list:
+                        for box_y in box_y_list:
+                            if click_box_y == box_y:
                                 y_match = True
+                                break
+                        if click_box_y == box_y:
+                            break
 
-                    corners = check_corners(click_box, box)
-
-                    if (x_match and y_match) or corners:
+                    if (x_match and y_match):
                         print('overlap')
                         return True
 
